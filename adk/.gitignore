@@ -1,0 +1,64 @@
+# Python virtual environment
+.venv/
+venv/
+env/
+
+# Python compiled files
+*.pyc
+__pycache__/
+*.pyo
+*.pyd
+
+# IDE and editor files
+.idea/
+.vscode/
+*.sublime-workspace
+*.sublime-project
+
+# Environment variables
+.env
+*.env
+
+# Temporary files
+*.tmp
+*.bak
+*.swp
+*~
+
+# Generated files and directories
+audio_generations/
+image_generations/
+temp_pcm.wav
+sample.wav
+*.mp3
+*.wav
+*.png
+*.jpg
+*.jpeg
+
+# Python package installation
+*.egg-info/
+dist/
+build/
+*.whl
+
+# Logs and caches
+*.log
+*.cache
+*.DS_Store
+
+# Testing and coverage
+.coverage
+coverage.xml
+*.cover
+htmlcov/
+
+# Jupyter notebooks
+*.ipynb_checkpoints/
+
+# ChromaDB data
+chroma_data/
+chromadb/
+
+# macOS-specific
+.DS_Store
