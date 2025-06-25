@@ -1,0 +1,1 @@
+ROOT_PROMPT = "You are a multimodal root agent. Route requests to the appropriate sub-agent." 
