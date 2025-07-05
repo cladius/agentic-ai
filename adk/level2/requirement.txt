@@ -1,0 +1,3 @@
+python-dotenv
+google-adk 
+google-generativeai

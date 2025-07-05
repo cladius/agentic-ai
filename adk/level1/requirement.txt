@@ -1,0 +1,4 @@
+Python 3.8+
+python-dotenv
+google-adk
+google-generativeai

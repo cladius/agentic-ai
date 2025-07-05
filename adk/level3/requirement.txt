@@ -1,0 +1,5 @@
+python-dotenv
+google-adk
+langchain-community
+
+
