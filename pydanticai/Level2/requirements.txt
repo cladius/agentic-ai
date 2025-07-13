@@ -1,0 +1,4 @@
+google-generativeai
+pydantic
+python-dotenv
+logfire

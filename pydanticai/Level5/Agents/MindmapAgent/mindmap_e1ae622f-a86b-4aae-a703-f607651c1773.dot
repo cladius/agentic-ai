@@ -1,0 +1,24 @@
+digraph G { rankdir=LR; node [shape=box, style=filled, fillcolor=lightblue];
+    "PydanticAI" -> "Key Features";
+    "PydanticAI" -> "Model Agnostic";
+    "PydanticAI" -> "Pydantic Logfire Integration";
+    "PydanticAI" -> "Type-Safe Design";
+    "PydanticAI" -> "Python Control Flow";
+    "PydanticAI" -> "Structured Responses";
+    "PydanticAI" -> "Dependency Injection";
+    "PydanticAI" -> "Streamed Responses";
+    "PydanticAI" -> "Graph Support";
+    "Key Features" -> "Ease of Use (FastAPI)";
+    "Key Features" -> "Production-Grade Apps";
+    "Model Agnostic" -> "LLM Support (OpenAI, Anthropic, Gemini)";
+    "Pydantic Logfire Integration" -> "Real-time Debugging";
+    "Pydantic Logfire Integration" -> "Monitoring";
+    "Structured Responses" -> "Pydantic Validation";
+    "Dependency Injection" -> "Data & Services";
+    "Dependency Injection" -> "Testing & Iteration";
+    "Graph Support" -> "Complex Applications";
+    "PydanticAI" -> "Use Cases";
+    "Use Cases" -> "Bank Support Agent";
+    "Bank Support Agent" -> "Balance Inquiries";
+    "Bank Support Agent" -> "Card Management";
+}
