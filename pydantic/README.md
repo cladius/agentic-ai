@@ -7,23 +7,15 @@ This repo contains 5 levels of hands-on projects built with the Pydantic AI fram
 
 ---
 
-## Levels and Projects
+## What is Pydantic AI?
+[Pydantic AI](https://ai.pydantic.dev/) is a Python framework that helps you build intelligent, multi-capable AI agents using structured workflows.
 
-### Level 1: Basic Hello World Agent
-- 💡 A simple agent powered by a language model (LLM) that answers basic queries in the CLI.
-
-### Level 2: Conversational Memory Agent
-- 🧠 Learns how to use conversation history to provide better, more relevant answers.
-
-### Level 3: Tool-Enabled Web Search Agent
-- 🌐 Integrates a search tool (e.g., Travily Search) to fetch real-time information, like a mini Perplexity.
-  
-### Level 4: Vector Store & OCR Agent
-- 📂 Creates a vector database for resources (e.g., Compiler Design book), processes resumes, and uses OCR to read scanned documents.
-
-### Level 5: Multi-Agent (Notebook LM Mimic)
-- 🎙 Combines PDFs, YouTube URLs, web pages, text, and images into a multi-tool AI system. Generates mindmaps and podcasts, mimicking Google NotebookLM’s workflow.
-
+### It provides:
+- Validation & Safety: Ensures clean, validated input/output using Pydantic models.
+- Agent Routing: Automatically decides which agent handles which task.
+- Tool Integration: Supports tools like Google Search, OCR, and APIs for extended capability.
+- Memory & Planning: Enables multi-turn conversations and long-term memory.
+- Multi-Agent Coordination: Powers agents that work together, like a full assistant ecosystem.
 ---
 
 ## API & Tool Requirements
