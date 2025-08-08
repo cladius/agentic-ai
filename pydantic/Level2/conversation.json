@@ -1,0 +1,16 @@
+{
+  "conversation": [
+    {
+      "user": "My name is Sakhi and I am an engineering student interested in compiler design and ML. What are some good career options?",
+      "response": "Compiler design and ML skills are highly sought after.  Consider roles like compiler engineer, machine learning engineer, or research scientist focusing on compiler optimization or ML systems."
+    },
+    {
+      "user": "What are some relevant textbooks that align with my interests?",
+      "response": "For compiler design: \"Compilers: Principles, Techniques, and Tools\" (Aho et al.).  For ML: \"Deep Learning\" (Goodfellow et al.) or \"Pattern Recognition and Machine Learning\" (Bishop)."
+    },
+    {
+      "user": "What is my name?",
+      "response": "Your name is Sakhi."
+    }
+  ]
+}
