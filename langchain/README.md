@@ -138,6 +138,11 @@ Create requirements.txt file with the libraries needed for the application
 3. Copilot will suggest code file, config and a `requirements.txt` file. 
 > Note: This is based on above prompt, files or structure can be different
 
+**Prompting guideline**
+- Always write clear and specific instructions with all required context.
+- In case of complex use case, break down the task and prompt one task at a time.
+- You can also feed the errors to ghcp to fix the errors.
+
 In case you are stuck or not getting the right response. You can checkout the code and config file in the Langchain folder - 
 - [chat_terminal.py](chat_terminal.py)
 - [config.py](config.py)
