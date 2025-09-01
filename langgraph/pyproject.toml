@@ -1,0 +1,15 @@
+[project]
+name = "langgraph-examples"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "langchain>=0.3.27",
+    "langchain-astradb>=0.6.1",
+    "langchain-groq>=0.3.7",
+    "langchain-huggingface>=0.3.1",
+    "langgraph>=0.6.6",
+    "python-dotenv>=1.1.1",
+    "sentence-transformers>=5.1.0",
+]

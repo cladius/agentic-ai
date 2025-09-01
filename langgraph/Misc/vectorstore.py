@@ -3,6 +3,12 @@ from langchain_astradb import AstraDBVectorStore
 from langchain_huggingface import HuggingFaceEmbeddings 
 from langchain_groq import ChatGroq 
 from langgraph.graph import StateGraph, END 
+import os
+from dotenv import load_dotenv
+load_dotenv()
+
+# Your Groq API key (keep this secure in production)
+GROQ_API_KEY = os.getenv("GROQ_API_KEY")
 
 # ----- Step 1: Define state ----- 
 class MemoryState(TypedDict):    
@@ -15,9 +21,9 @@ embedding_model = HuggingFaceEmbeddings(
     model_name="sentence-transformers/all-MiniLM-L6-v2" ) 
 
 # ----- Step 3: Astra DB Config ----- 
-ASTRA_DB_APPLICATION_TOKEN = "Your_AstraDB_Application_Token_Here" 
-ASTRA_DB_API_ENDPOINT = "Your_AstraDB_API_Endpoint_Here" 
-ASTRA_DB_COLLECTION = "Your_AstraDB_Collection_Name_Here" 
+ASTRA_DB_APPLICATION_TOKEN = os.getenv("ASTRA_DB_TOKEN")
+ASTRA_DB_API_ENDPOINT = os.getenv("ASTRA_DB_ENDPOINT")
+ASTRA_DB_COLLECTION = os.getenv("ASTRA_DB_COLLECTION")
 
 vector_store = AstraDBVectorStore(collection_name=ASTRA_DB_COLLECTION,    
                 embedding=embedding_model,api_endpoint=ASTRA_DB_API_ENDPOINT,
@@ -26,7 +32,7 @@ vector_store = AstraDBVectorStore(collection_name=ASTRA_DB_COLLECTION,
 retriever = vector_store.as_retriever() 
 
 # ----- Step 4: Initialize LLM ----- 
-llm=ChatGroq(groq_api_key="Your API KEY",model="llama-3.3-70b-versatile") 
+llm=ChatGroq(groq_api_key=GROQ_API_KEY,model="llama-3.3-70b-versatile") 
 
 # ----- Step 5: Memory Node with LLM ----- 
 def memory_node(state: MemoryState) -> MemoryState:    
