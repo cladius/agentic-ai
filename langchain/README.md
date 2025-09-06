@@ -14,7 +14,25 @@ Go checkout this [setup guide](https://gist.github.com/Khushu308/b65b03f99cbf599
 5. Make sure to save/store the API Key somewhere safe, cause you won't be able to copy or view the api key after that.
 6. It'll give you the entire env variables with value copy and paste it in your .env file. 
 
-#### To start viewing the traces
+> To know the available models and details about them checkout - [model docs](https://console.groq.com/docs/models)
+
+### Generating Langsmith API keys
+1. Sign-up for a Langsmith account - [langsmith.com](https://smith.langchain.com/)
+2. Log in to the langsmith.
+![alt text](images/langsmith_console.png)
+3. Click on `Set up tracing`
+4. Click on `generate api key` and copy configure environment section.
+![Langsmith Trace Project setup](images/langsmith_project_setup.png)
+5. Create a .env file (if it's not already present), this should be present in the root of your project folder.
+6. Paste the configure environment variables that you copied in step 4, without the `export` keyword. Also remove the `OPENAI_API_KEY` variable in the .env (only use when you have a key from OpenAI). So what you paste in your .env file will look somewhat similar to what's shown below:
+```bash
+LANGSMITH_TRACING=true
+LANGSMITH_ENDPOINT=https://api.smith.langchain.com
+LANGSMITH_API_KEY=lsv2_pt_505038....
+LANGSMITH_PROJECT=pr-standard-gift-77
+```
+
+### To start viewing the traces
 
 Now you can run your python script, just make sure after pasting you kill all the terminal and start the terminal. Run the python script, once you get the llm response. 
 You can go back to langsmith console, 
@@ -23,15 +41,6 @@ You can go back to langsmith console,
 - you'll be able to see the llm call made and the response
 
 ![alt text](images/langsmith_trace.png)
-
-
-### Generating Langsmith API keys
-1. Sign-up for a Langsmith account - [langsmith.com](https://smith.langchain.com/)
-2. Log in to the langsmith.
-![alt text](images/langsmith_console.png)
-3. Click on `Set up tracing`
-4. It'll give you step-by-step easy to follow guide. Click on `generate api key` and you can edit `Project Name`.
-
 
 ---
 
@@ -212,8 +221,6 @@ In case you are stuck or not getting the right response. You can checkout the co
 3. You should see the output in the terminal below.
 4. If there are errors, check the terminal messages for hints.
 
----
-
 ### 11. Troubleshooting
 1. In case you run into some issues, examine the error message and try to troubleshoot.
 2. If that doesn't work, tap in your trusty sidekick - [Claude.ai](https://claude.ai/new)
@@ -229,4 +236,29 @@ Debug issues in my code
 {Paste the actual error from terminal/command prompt here}
 ```
 4. Try out the recommendations from Claude.
+
+---
+
+## Objective
+
+The main objective is for you to be able to send a request to the llm in the form of generic questions and you are able to get responses on your terminal, and also to check how it gets traced on langsmith to gain insights and metrics on your application.
+
+### Sample qns to verify output
+
+Note: The qn and response should also be present in your langsmith project configured.
+
+1. What's the capital of India?
+Ans. Capital of India is Delhi 
+
+2. Explain OOPs concepts?
+Ans. **Object-Oriented Programming (OOP) Concepts**
+==============================================
+
+Object-Oriented Programming (OOP) is a programming paradigm that revolves around the concept of objects and classes. It provides a way to design, organize, and structure code in a modular and reusable manner.
+....
+
+
+> Please note: if you ask qns based on realtime eg. `What's the time now?` or `what's the weather in Pune?`.
+> You'll get incorrect responses since the LLM's have a knowledge cutoff date, it can only respond based on the data it was trained on.
+
 
