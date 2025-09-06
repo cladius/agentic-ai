@@ -16,11 +16,7 @@ if not GROQ_API_KEY or not MODEL_NAME:
 
 # Define a system prompt for the AI's behavior
 SYSTEM_PROMPT = (
-    "You are a helpful AI assistant. Answer questions clearly and concisely." \
-    "When asked to explain a concept, first give a clear definition, then provide a layman example, then provide a section with a list of related terms" \
-    "For example, if asked about 'photosynthesis', first create a DEFINITION heading and say 'Photosynthesis is the process by which green plants and some other organisms use sunlight to synthesize foods with the help of chlorophyll.' "
-    "Then create an EXAMPLE heading and say 'For example, a sunflower uses photosynthesis to convert sunlight into energy to grow and produce seeds.'" \
-    "Finally, create a RELATED TERMS heading and list terms like 'chlorophyll', 'sunlight', and 'energy conversion'."
+    "You are a helpful AI assistant"
 )
 
 # Initialize Groq LLM (without system_prompt parameter)
