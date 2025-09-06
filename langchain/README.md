@@ -22,9 +22,9 @@ Go checkout this [setup guide](https://gist.github.com/Khushu308/b65b03f99cbf599
 ![alt text](images/langsmith_console.png)
 3. Click on `Set up tracing`
 4. Click on `generate api key` and copy configure environment section.
-![Langsmith Trace Project setup](images/langsmit_project_setup.png)
+![Langsmith Trace Project setup](images/langsmith_project_setup.png)
 5. Create a .env file (if it's not already present), this should be present in the root of your project folder.
-6. Paste the configure environment variables that you copied in step 4, without the `export` keyword. Also remove the `OPENAI_API_KEY` variable in the .env (only use when you have an key from OpenAI). So what you paste in your .env file will look somewhat similar to what's shown below:
+6. Paste the configure environment variables that you copied in step 4, without the `export` keyword. Also remove the `OPENAI_API_KEY` variable in the .env (only use when you have a key from OpenAI). So what you paste in your .env file will look somewhat similar to what's shown below:
 ```bash
 LANGSMITH_TRACING=true
 LANGSMITH_ENDPOINT=https://api.smith.langchain.com
