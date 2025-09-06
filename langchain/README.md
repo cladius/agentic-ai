@@ -213,3 +213,20 @@ In case you are stuck or not getting the right response. You can checkout the co
 4. If there are errors, check the terminal messages for hints.
 
 ---
+
+### 11. Troubleshooting
+1. In case you run into some issues, examine the error message and try to troubleshoot.
+2. If that doesn't work, tap in your trusty sidekick - [Claude.ai](https://claude.ai/new)
+3. Enter a prompt like this
+```
+Debug issues in my code
+
+## My code
+{Paste your code here - don't put in apikeys/secrets though}
+
+
+## Error in terminal
+{Paste the actual error from terminal/command prompt here}
+```
+4. Try out the recommendations from Claude.
+
