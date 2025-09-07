@@ -169,7 +169,7 @@ In case you are stuck or not getting the right response. You can checkout the co
 ### 7. Activate the Virtual Environment
 1. In the terminal (git bash), type:
 	```
-	source venv\Scripts\activate
+	source venv/Scripts/activate
 	```
 
     Cmd - 
