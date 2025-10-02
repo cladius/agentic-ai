@@ -1,0 +1,77 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+**/__pycache__/
+*.py[cod]
+*$py.class
+
+# Virtual environment (ignore in any folder)
+venv/
+env/
+.venv/
+.env/
+**/venv/
+**/env/
+**/.venv/
+**/.env/
+
+# Distribution / packaging
+build/
+dist/
+*.egg-info/
+.eggs/
+**/build/
+**/dist/
+**/*.egg-info/
+**/.eggs/
+
+# Installer logs
+pip-log.txt
+pip-delete-this-directory.txt
+**/pip-log.txt
+**/pip-delete-this-directory.txt
+
+# Unit test / coverage reports
+htmlcov/
+.tox/
+.nox/
+.coverage
+.coverage.*
+.cache
+.pytest_cache/
+nosetests.xml
+coverage.xml
+*.cover
+*.py,cover
+**/htmlcov/
+**/.tox/
+**/.nox/
+**/.coverage
+**/.coverage.*
+**/.cache
+**/.pytest_cache/
+**/nosetests.xml
+**/coverage.xml
+**/*.cover
+**/*.py,cover
+
+# Jupyter Notebook
+.ipynb_checkpoints
+**/.ipynb_checkpoints
+
+# IDEs and editors
+.vscode/
+.idea/
+*.swp
+*.swo
+**/.vscode/
+**/.idea/
+**/*.swp
+**/*.swo
+
+# OS files
+.DS_Store
+**/.DS_Store
+
+# Misc
+*.log
+**/*.log
