@@ -80,7 +80,20 @@ def lambda_handler(event, context):
             if param.get('name') == 'search_term':
                 search_term = param.get('value')
                 break
-        
+    
+    # Fallback: try to extract from requestBody
+    if not search_term and 'requestBody' in event:
+        try:
+            content = event['requestBody'].get('content', {})
+            app_json = content.get('application/json', {})
+            properties = app_json.get('properties', [])
+            for prop in properties:
+                if prop.get('name') == 'search_term':
+                    search_term = prop.get('value')
+                    break
+        except Exception as e:
+            print(f"Error extracting from requestBody: {e}") 
+   
     if not search_term:
         return {
             'statusCode': 400,
