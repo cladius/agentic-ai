@@ -27,7 +27,7 @@ For more details, see the code in `agent.py`.
 This example demonstrates how to make a simple call to a Large Language Model (LLM) using the [LangGraph](https://github.com/langchain-ai/langgraph) library.
 
 ## Overview
-- The code in `agent_user_input.py` sets up a minimal LangGraph workflow to send a user input to an LLM and receive a response.
+- The code in `agent_user_inline.py` sets up a minimal LangGraph workflow to send a user input to an LLM and receive a response.
 - User can ask multiple questions till user exit from terminal
 
 ## How it works
