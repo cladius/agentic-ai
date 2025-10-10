@@ -7,8 +7,6 @@ import os
 from langgraph.graph import StateGraph, END, MessagesState
 from langchain_groq import ChatGroq
 from langchain_core.messages import HumanMessage, AIMessage
-from typing import TypedDict, Annotated, Sequence
-import operator
 
 # Read GROQ_API_KEY from environment
 groq_api_key = os.environ.get("GROQ_API_KEY")
