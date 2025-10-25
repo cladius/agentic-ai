@@ -2,6 +2,8 @@
 
 Connect Amazon Bedrock Agent with AstraDB for RAG.
 
+[Accompanying YouTube Video](https://www.youtube.com/watch?v=8MTpmKXByc0)
+
 ## Overview of Bedrock Agents
 
 <details>
