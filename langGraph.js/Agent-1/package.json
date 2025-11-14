@@ -1,0 +1,22 @@
+{
+  "name": "my-langgraph-app",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "@langchain/community": "^0.3.47",
+    "@langchain/core": "^0.3.61",
+    "@langchain/groq": "^0.2.3",
+    "@langchain/langgraph": "^0.3.4",
+    "dotenv": "^16.5.0",
+    "langchain": "^0.3.29",
+    "prompt-sync": "^4.2.0"
+  },
+  "type": "module"
+}
