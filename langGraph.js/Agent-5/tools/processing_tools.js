@@ -6,8 +6,12 @@ import textToSpeech from "@google-cloud/text-to-speech";
 import { z } from "zod";
 
 export function createTools(llm) {
-    const mindMapTool = tool(               // creates a mind map of the source material
+    // docContent: Content extracted from the source material
+    //query : The user's query regarding the source material
+
+    const mindMapTool = tool(   // creates a mind map of the source material
     async ({ docContent, query }) => {
+
         const systemMessage = new SystemMessage(`You are an AI Assistant that helps users create a mind map based on the content provided.
         Return ONLY valid JSON in this structure:
             {
@@ -22,8 +26,11 @@ export function createTools(llm) {
             ]
             }`
         );
+
         const response = await llm.invoke([systemMessage ,new HumanMessage(`content : ${docContent} where the query was ${query}`)]);
         const mindMap = response.content;
+
+        // Save generated mind map JSON to a file for user access.
         await fs.promises.writeFile("mind_map.txt", mindMap);
         return "✅ Mind map saved to mind_map.txt\n" + mindMap;
     },
@@ -38,6 +45,7 @@ export function createTools(llm) {
     );
 
     const podcastTool = tool(
+    // Podcast Creation Tool- Generates a two-speaker podcast script (Host + Guest) using the LLM, then converts it into audio using Google Cloud Text-to-Speech.
     async ({ docContent, query }) => {
         // --- STEP 1: Update the LLM Prompt ---
         // Instruct the LLM to write a script with clear speaker labels.
@@ -78,7 +86,7 @@ export function createTools(llm) {
         const finalSSML = `<speak>${ssmlBody}</speak>`;
 
         // --- STEP 3: Update the Google Cloud TTS API Call ---
-        const client = new textToSpeech.TextToSpeechClient({ keyFilename: "gcp-tts.json" });
+        const client = new textToSpeech.TextToSpeechClient({ keyFilename: "gcp-tts.json" }); // credentials file used here
         const request = {
         // Tell the API we are sending SSML, not plain text
         input: { ssml: finalSSML },
@@ -87,7 +95,10 @@ export function createTools(llm) {
         audioConfig: { audioEncoding: "MP3" },
         };
         
+        // Send synthesis request to Google Cloud
         const [result] = await client.synthesizeSpeech(request);
+
+        // Write resulting MP3 to disk
         const writeFile = util.promisify(fs.writeFile);
         await writeFile("podcast_episode_two_voice.mp3", result.audioContent, "binary");
         
@@ -103,8 +114,10 @@ export function createTools(llm) {
     }
     );
 
-    const noteTakingTool= tool(             // creates bullet notes of the source material 
-    async ({docContent, query}) => {      
+    const noteTakingTool= tool(     // creates bullet notes of the source material 
+    async ({docContent, query}) => {  
+
+        // LLM prompt instructing it to produce brief and structured bullet notes.
         const response = await llm.invoke([
             new SystemMessage("You are an AI assistant that helps user make bullet points notes of the context provided. Based on the content provided, give proper brief and concise notes"),                            
             new HumanMessage(`Here is the content: ${docContent} and here is the query used: ${query}`)
@@ -121,8 +134,10 @@ export function createTools(llm) {
         }
     );
 
-    const summarizationTool = tool(          // summarizes the source material 
+    const summarizationTool = tool(    // summarizes the source material 
     async ({docContent, query}) => {  
+
+        // Standard summarization prompt for the LLM.
         const summaryPrompt = [
         {
             role: "system",
@@ -134,6 +149,7 @@ export function createTools(llm) {
             content: `Content: ${docContent} and here is the query used: ${query}`,
         },
         ];
+
         const response = await llm.invoke(summaryPrompt);
         return `Here is the summary you requested:\n${response.content}`;
     },
@@ -146,5 +162,7 @@ export function createTools(llm) {
         }),
     }
     );
+    
+    // Return all tools so they can be registered with the agent.
     return [mindMapTool, podcastTool, noteTakingTool, summarizationTool];
 }
