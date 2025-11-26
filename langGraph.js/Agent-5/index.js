@@ -18,19 +18,19 @@ import { RecursiveCharacterTextSplitter } from "langchain/text_splitter";
 
 import fs from "fs";
 
-// =================================================================
+
 // 1. STATE DEFINITION
-// =================================================================
+
 const agentState = {             //Represents the state of our agent.
-  last_input: {                  // The most recent user input.                
-    value: (x, y) => y,
+  lastInput: {                  // The most recent user input.                
+    value: (x, y) => y,         // Always replace with the latest input
     default: () => "",
   },
   messages: {                   // The history of the conversation. 
-    value: (x, y) => x.concat(y),
+    value: (x, y) => x.concat(y), // Append new messages to existing history
     default: () => [],
   },
-  route_decision: {            // Decision from the planner node to route the graph.
+  routeDecision: {            // Decision from the planner node to route the graph.
     value: (x, y) => y, 
     default: () => "",
   },
@@ -44,9 +44,7 @@ const agentState = {             //Represents the state of our agent.
   }
 };
 
-// =================================================================
 // 2. LLM and TOOLS INITIALIZATION
-// =================================================================
 
 const llm = new ChatGroq({
   apiKey: process.env.GROQ_API_KEY,
@@ -54,7 +52,7 @@ const llm = new ChatGroq({
   temperature: 0,
 });
 
-// ✨ Initialize embeddings model
+// Initialize embeddings model
 const embeddings = new HuggingFaceTransformersEmbeddings({
     modelName: "sentence-transformers/all-MiniLM-L6-v2",
 });
@@ -62,36 +60,35 @@ const embeddings = new HuggingFaceTransformersEmbeddings({
 // --- INGESTION TOOLS ---
 const ingestionTools = createIngestionTools();
 const llmWithIngestionTools = llm.bindTools(ingestionTools);
+// .bind_tools() on an LLM instance, creates a new, modified instance of the LLM with the tool bindings attached, rather than updating the original instance in place.
 
 // --- PROCESSING TOOLS ---
 const processingTools = createTools(llm); 
 const processingToolNode = new ToolNode(processingTools);
 const llmWithProcessingTools = llm.bindTools(processingTools);
 
-// =================================================================
 // 3. AGENT NODES
-// =================================================================
 
 // The central hub. Classifies the user's input to decide where to go next.
 const planner_node = async (state) => {
-  const { last_input } = state;
+  const { lastInput } = state;
   const systemPrompt = `You are a classifier. Your only job is to determine if the user's input is a resource, a query, or an exit command.
   - A 'resource' is a URL (http, https), a local file path (e.g., C:/, /users/), or raw text meant to be used as context.
   - A 'query' is a question or a command asking to perform an action (e.g., 'summarize', 'what is?', 'make notes', 'create a mind map', 'create a podcast').
   - 'exit' means the user wants to end the conversation.
   Respond with ONLY 'resource', 'query', or 'exit'.`;
   
-  const response = await llm.invoke([new SystemMessage(systemPrompt), new HumanMessage(last_input)]);
+  const response = await llm.invoke([new SystemMessage(systemPrompt), new HumanMessage(lastInput)]);
   
-  return { route_decision: response.content };
+  return { routeDecision: response.content };
 };
 
 // Handles resource ingestion. It uses an LLM with ingestion tools to process URLs, PDFs and text.
 const ingestion_node = async (state) => {
-  const { last_input } = state;
+  const { lastInput } = state;
   const systemPrompt = "You are an expert at identifying all resources (URLs, file paths, raw text) in a user's input. For each identified resource, call the appropriate ingestion tool.";
   
-  const response = await llmWithIngestionTools.invoke([new SystemMessage(systemPrompt), new HumanMessage(last_input)]);
+  const response = await llmWithIngestionTools.invoke([new SystemMessage(systemPrompt), new HumanMessage(lastInput)]);
   
   // The response will contain tool calls that the next node will execute.
   return { messages: [response] };
@@ -112,9 +109,9 @@ const ingestion_tool_node = async (state) => {
   
   // Loop through each tool call and invoke it directly
   for (const call of toolCalls) {
-    const toolToCall = toolMap.get(call.name);
+    const toolToCall = toolMap.get(call.name); 
     if (toolToCall) {
-      const output = await toolToCall.invoke(call.args);
+      const output = await toolToCall.invoke(call.args); // Invoke the tool with the provided arguments
       toolOutputs.push(output);
       toolMessages.push(new ToolMessage({ tool_call_id: call.id, content: `Successfully processed ${call.args}` }));
     }
@@ -123,15 +120,21 @@ const ingestion_tool_node = async (state) => {
   const newContent = toolOutputs.join("\n\n");
   
   // --- Vectorization Step ---
+
+  // Split text into overlapping chunks for better retrieval accuracy
   const splitter = new RecursiveCharacterTextSplitter({ chunkSize: 500, chunkOverlap: 50 });
+  /* RecursiveCharacterTextSplitter : 
+    The splitter uses a list of separators (e.g., ["\n\n", "\n", " ", ""]) and attempts to split the text using the first separator in the list.
+    If a resulting chunk is smaller than the specified chunkSize, it's considered a valid chunk.
+    If a chunk is larger than chunkSize, the splitter recursively applies the next separator in the list to that chunk, trying to break it down further until all chunks are within the size limit.
+  */
   const docs = await splitter.splitDocuments([
     new Document({ pageContent: newContent, metadata: { userId, source: "user_upload" } })
   ]);
   
-  const collectionName = `agent_docs_${userId}`;
-  const vectorStore = new Chroma(embeddings, { collectionName });
-  
-  await vectorStore.addDocuments(docs);
+  const collectionName = `agent_docs_${userId}`; // Unique collection per user
+  const vectorStore = new Chroma(embeddings, { collectionName }); 
+  await vectorStore.addDocuments(docs); // Add the new documents to the vector store
   console.log(`✅ Content chunked and added to the vector store for user: ${userId}`);
   
   const confirmationMessage = new AIMessage("✅ Content has been processed and stored. What would you like to do with it?");
@@ -144,25 +147,29 @@ const ingestion_tool_node = async (state) => {
 
 // Handles user queries. It can answer from context, from general knowledge, or use processing tools. 
 // It will first try to retrieve relevant documents from the vector store based on the user's query.
-const responseQuery_node = async (state) => {
-  const { last_input, messages, vectorStore } = state; 
+const response_query_node = async (state) => {
+  const { lastInput, messages, vectorStore } = state; 
   
-  let retrieved_context = "No relevant context found.";
-  const lastMessage = messages.length > 0 ? messages[messages.length - 1] : null;
+  let retrievedContext = "No relevant context found.";
+  const lastMessage = messages.length > 0 ? messages[messages.length - 1] : null; // Get the last message if it exists
 
+  // If we have a vector store, perform a similarity search to get relevant context
   if (vectorStore) {
       if (!lastMessage || lastMessage._getType() !== "tool") {
         console.log("✅ Retrieving relevant context from vector store...");
       }
-      const queryVector = await embeddings.embedQuery(last_input);
+      // Convert the user's natural-language query into an embedding vector
+      const queryVector = await embeddings.embedQuery(lastInput);
+      // Perform a similarity search in the vector store using the query embedding and returning the top 2 most relevant chunks
       const results = await vectorStore.similaritySearchVectorWithScore([queryVector], 2);
-      retrieved_context = results.map(result => result[0].pageContent).join("\n\n");
+      // Extract the text content from the retrieved documents.
+      retrievedContext = results.map(result => result[0].pageContent).join("\n\n");
   }
 
   const systemPrompt = `You are a helpful and expert AI assistant. You MUST answer the user's query based ONLY on the provided context below.
     Context:
     ---
-    ${retrieved_context}
+    ${retrievedContext}
     ---
     If the context is not sufficient, you may use a tool. Your reasoning process:
     1.  Analyze the user's query.
@@ -171,19 +178,18 @@ const responseQuery_node = async (state) => {
     4.  After a tool runs, evaluate its output to form a final answer.
     IMPORTANT: Once you have a satisfactory answer, respond directly to the user without tool calls.`;
 
-  const conversation = [new SystemMessage(systemPrompt), ...messages, new HumanMessage(last_input)];
-  const response = await llmWithProcessingTools.invoke(conversation);
+  const conversation = [new SystemMessage(systemPrompt), ...messages, new HumanMessage(lastInput)];
+  const response = await llmWithProcessingTools.invoke(conversation); // The response may contain tool calls or a final answer.
   
-  return { messages: [new HumanMessage(last_input), response] };
+  return { messages: [new HumanMessage(lastInput), response] };
 };
 
-// =================================================================
-// 4. GRAPH ROUTING AND CONSTRUCTION
-// =================================================================
+// 4. GRAPH ROUTING AND CONSTRUCTION 
+
 const route_planner = (state) => {
-  const { route_decision } = state;
-  if (route_decision.includes("resource")) return "ingestion_node";
-  if (route_decision.includes("query")) return "responseQuery_node";
+  const { routeDecision } = state;
+  if (routeDecision.includes("resource")) return "ingestion_node";
+  if (routeDecision.includes("query")) return "response_query_node";
   return END;
 };
 
@@ -197,12 +203,13 @@ const route_after_query = (state) => {
   // If the last message is a final answer (no tool calls), end the conversation.
   return END ;
 };
+
 const workflow = new StateGraph({ channels: agentState });
 
 workflow.addNode("planner_node", planner_node);
 workflow.addNode("ingestion_node", ingestion_node);
 workflow.addNode("ingestion_tool_node", ingestion_tool_node);
-workflow.addNode("responseQuery_node", responseQuery_node);
+workflow.addNode("response_query_node", response_query_node);
 workflow.addNode("processing_tool_node", processingToolNode);
 
 workflow.addEdge("__start__", "planner_node");
@@ -211,7 +218,7 @@ workflow.addConditionalEdges(
   route_planner,
   {
     "ingestion_node": "ingestion_node",
-    "responseQuery_node": "responseQuery_node",
+    "response_query_node": "response_query_node",
     "__end__": END
   }
 );
@@ -222,24 +229,24 @@ workflow.addEdge("ingestion_tool_node", END);
 
 // Query Spoke
 workflow.addConditionalEdges(
-  "responseQuery_node",
+  "response_query_node",
   route_after_query,
   {
     "processing_tool_node": "processing_tool_node",
     "__end__" : END // End if final answer
   }
 );
-workflow.addEdge("processing_tool_node", "responseQuery_node"); // Loop back to process tool results
+workflow.addEdge("processing_tool_node", "response_query_node"); // Loop back to process tool results
 const app = workflow.compile();
 
-// =================================================================
-// 6. GRAPH VISUALIZATION EXPORT FUNCTION
-// =================================================================
+// 5. GRAPH VISUALIZATION EXPORT FUNCTION
 
 async function exportGraphImage(compiledGraph, fileName = "graph.png") {
+  // Generate a visual representation of the graph structure and save it as a PNG image.
+
   try {
-    const drawableGraph = await compiledGraph.getGraphAsync();
-    const image = await drawableGraph.drawMermaidPng();
+    const drawableGraph = await compiledGraph.getGraphAsync(); // Get drawable graph representation
+    const image = await drawableGraph.drawMermaidPng();// Generate PNG image using Mermaid
 
     if (Buffer.isBuffer(image)) {
       fs.writeFileSync(fileName, image);
@@ -256,11 +263,9 @@ async function exportGraphImage(compiledGraph, fileName = "graph.png") {
 
 await exportGraphImage(app, "./assets/agent_graph.png");
 
-// =================================================================
-// 7. AGENT EXECUTION LOOP
-// =================================================================
+// 6. AGENT EXECUTION LOOP
 
-const agent_Call = async () => {
+const agentCall = async () => {
   console.log("🤖 Hello! I am your AI assistant. You can provide a resource (URL, PDF, text) or ask a query.");
   
   // This Map will act as our in-memory storage for all conversation states.
@@ -278,8 +283,8 @@ const agent_Call = async () => {
     
     // Inner loop for the active conversation thread.
     while (true) {
-      const userinput = prompt(`${userId}: `);
-      if (userinput.toLowerCase() === "exit") {
+      const userInput = prompt(`${userId}: `);
+      if (userInput.toLowerCase() === "exit") {
         console.log(`--- Pausing conversation with ${userId} ---`);
         break; // Exit inner loop to switch users
       }
@@ -291,12 +296,12 @@ const agent_Call = async () => {
       };
 
       // 2. Invoke the graph with the current thread's state.
-      const result = await app.invoke({ ...currentState, last_input: userinput });
+      const result = await app.invoke({ ...currentState, lastInput: userInput });
       
       // 3. Save the updated state back to our map.
       conversationStates.set(userId, result);
       
-      const lastAiMessage = result.messages.slice().reverse().find(
+      const lastAiMessage = result.messages.slice().reverse().find( // Find the last AI message in the conversation
         (msg) => msg._getType() === "ai" && msg.content
       );
 
@@ -307,4 +312,4 @@ const agent_Call = async () => {
   }
 };
 
-agent_Call();
+agentCall();
