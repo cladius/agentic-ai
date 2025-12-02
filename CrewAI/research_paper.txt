@@ -1,0 +1,142 @@
+Title: Deep Reinforcement Learning: An Overview
+Author: Yuxi Li
+arXiv: 1810.06339 [cs.LG] (15 Oct 2018)
+
+Abstract:
+We discuss deep reinforcement learning in an overview style.
+We draw a big picture, filled with details.
+We discuss six core elements, six important mechanisms, and twelve applications.
+We start with background of artificial intelligence, machine learning, deep learning, and reinforcement learning (RL), with resources.
+Next we discuss RL core elements, including value function, policy, reward, model, exploration vs. exploitation, and representation.
+Then we discuss important mechanisms for RL, including attention and memory, unsupervised learning, hierarchical RL, multi‑agent RL, relational RL, and learning to learn.
+After that, we discuss RL applications, including games, robotics, natural language processing (NLP), computer vision, finance, business management, healthcare, education, energy, transportation, computer systems, and science, engineering, and art.
+Finally we summarize briefly, discuss challenges and opportunities, and close with an epilogue.
+
+1. Introduction
+Reinforcement learning (RL) is a paradigm in machine learning where agents learn to make decisions by interacting with environments.
+Deep reinforcement learning combines RL with deep neural networks to handle high‑dimensional sensory inputs.
+Since the success of Deep Q‑Networks (DQN) in Atari games, deep RL has advanced rapidly, achieving human‑level performance.
+However, challenges remain in stability, sample efficiency, generalization, safety, and interpretability.
+This overview organizes key ideas into core elements, mechanisms, and applications to help readers navigate the field.
+
+2. Background
+2.1 Artificial Intelligence and Machine Learning
+AI spans a wide range of techniques for intelligent behavior.
+Machine learning provides data‑driven algorithms to let computers learn patterns without explicit programming.
+Among machine learning paradigms, supervised learning, unsupervised learning, and reinforcement learning are fundamental.
+
+2.2 Deep Learning Foundations
+Deep learning refers to neural networks with many layers (deep architectures).
+These networks can automatically learn hierarchical representations from data.
+Combining deep learning with RL enables agents to process raw inputs (e.g., images, text) directly.
+
+3. Core Elements of Deep RL
+3.1 Value Function
+Estimates expected cumulative rewards from a given state or action.
+Includes state value V(s) and action value Q(s, a).
+
+3.2 Policy
+Defines how an agent chooses actions based on states.
+Can be deterministic or stochastic.
+Policy‑based methods directly adjust policy parameters.
+
+3.3 Reward
+Scalar signals indicating the quality of actions.
+Sparse or delayed rewards pose challenges in many tasks.
+
+3.4 Model
+Represents environment dynamics (transition and reward function).
+Model‑based RL uses a model to plan; model‑free methods do not.
+
+3.5 Exploration vs. Exploitation
+Exploration involves trying new actions to discover their effects.
+Exploitation involves selecting known good actions to maximize reward.
+Balancing the two is central to efficient learning.
+
+3.6 Representation
+Learning compact, effective representations of high‑dimensional inputs is crucial.
+Deep networks serve as function approximators in RL.
+
+4. Important Mechanisms
+4.1 Attention and Memory
+Attention mechanisms help agents focus on relevant parts of the input or internal state.
+Memory (e.g., recurrent neural networks, LSTM) allows agents to act based on history.
+
+4.2 Unsupervised Learning and Representation Learning
+Techniques like autoencoders, embeddings, and auxiliary tasks help learn better features.
+
+4.3 Transfer Learning and Multi‑task Learning
+Leveraging prior knowledge for new tasks can reduce training time and improve generalization.
+
+4.4 Hierarchical Reinforcement Learning
+Divides tasks into subgoals or options to address long‑horizon problems.
+
+4.5 Multi‑agent Reinforcement Learning
+Multiple agents learning simultaneously and interacting, cooperating or competing.
+
+4.6 Relational Reinforcement Learning
+Incorporates structured representations like graphs or objects into RL frameworks.
+
+4.7 Learning to Learn (Meta‑RL)
+Agents learn learning strategies that adapt quickly to new tasks.
+
+5. Applications of Deep RL
+We review twelve major domains where deep RL has shown impact:
+
+5.1 Games
+Breakthroughs like DQN in Atari, AlphaGo combining RL and search, and OpenAI Five.
+These successes highlight RL’s ability to master complex strategy.
+
+5.2 Robotics
+Training control policies from visual inputs or proprioceptive sensors.
+Learning motor skills like grasping or locomotion.
+
+5.3 Natural Language Processing (NLP)
+Dialogue agents, language generation, and question answering using RL reward signals.
+
+5.4 Computer Vision
+Visual attention, navigation, and scene understanding tasks via RL.
+
+5.5 Finance
+Algorithmic trading, portfolio management, and risk control using reinforcement signals.
+
+5.6 Business and Operations
+Inventory control, recommendation systems, and resource allocation.
+
+5.7 Healthcare
+Treatment planning, diagnostics, and adaptive interventions optimized via rewards.
+
+5.8 Education
+Personalized tutoring systems adapting to student performance.
+
+5.9 Energy Systems
+Smart grid control and demand‑side management via RL policies.
+
+5.10 Transportation
+Autonomous driving, traffic signal optimization, fleet routing.
+
+5.11 Computer Systems
+Data center cooling, resource management, and scheduling.
+
+5.12 Science, Engineering, and Art
+Applications ranging from molecule design to creative generation and optimization.
+
+6. Challenges and Opportunities
+Despite progress, many open issues persist:
+• Sample efficiency: learning from fewer interactions remains difficult.
+• Stability and convergence: deep networks can be unstable in RL training.
+• Safety, fairness, and ethics: ensuring safe and responsible policies.
+• Interpretability: understanding agent decisions is often opaque.
+• Generalization and robustness: avoiding overfitting to specific environments.
+
+7. Summary and Future Directions
+This overview provides a structured introduction to deep RL:
+six core elements (value, policy, reward, model, exploration, representation),
+seven key mechanisms, and twelve application domains.
+We identify major challenges and propose future directions,
+including improved algorithms, better transferable learning, safe deployment,
+and greater interpretability.
+
+References
+Li, Y. “Deep Reinforcement Learning”, arXiv:1810.06339, submitted 15 Oct 2018.
+[Further references omitted for brevity]

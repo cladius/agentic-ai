@@ -1,0 +1,27 @@
+# Ignore virtual environment
+venv/
+
+# Byte-compiled / cache files
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+
+# VS Code settings
+.vscode/
+
+# Logs
+*.log
+
+# OS files
+.DS_Store
+
+# Python environment files
+.env
+
+#Ignore memory file
+chat_memory.json
+
+D:\Building an AI agent\crewai\test.py
+
+test.py

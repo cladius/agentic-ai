@@ -1,0 +1,237 @@
+{
+  "title": "Challenges of Compiler Design",
+  "nodes": [
+    {
+      "id": "Compiler Design",
+      "label": "Compiler Design",
+      "children": [
+        {
+          "id": "Complexity of computer languages",
+          "label": "Complexity of computer languages",
+          "children": [
+            {
+              "id": "High-level vs. low-level languages",
+              "label": "High-level vs. low-level languages"
+            },
+            {
+              "id": "Simple vs. complex languages",
+              "label": "Simple vs. complex languages"
+            }
+          ]
+        },
+        {
+          "id": "Resource limitations",
+          "label": "Resource limitations",
+          "children": [
+            {
+              "id": "Time constraints",
+              "label": "Time constraints"
+            },
+            {
+              "id": "Memory constraints",
+              "label": "Memory constraints"
+            }
+          ]
+        },
+        {
+          "id": "Compiler phases",
+          "label": "Compiler phases",
+          "children": [
+            {
+              "id": "Front-end (analysis)",
+              "label": "Front-end (analysis)"
+            },
+            {
+              "id": "Middle-end (intermediate translation)",
+              "label": "Middle-end (intermediate translation)"
+            },
+            {
+              "id": "Back-end (target translation)",
+              "label": "Back-end (target translation)"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "Challenges",
+      "label": "Challenges",
+      "children": [
+        {
+          "id": "Handling complexity of source language",
+          "label": "Handling complexity of source language",
+          "children": [
+            {
+              "id": "Syntax analysis",
+              "label": "Syntax analysis"
+            },
+            {
+              "id": "Semantic analysis",
+              "label": "Semantic analysis"
+            },
+            {
+              "id": "Type checking",
+              "label": "Type checking"
+            }
+          ]
+        },
+        {
+          "id": "Optimizing compilation process",
+          "label": "Optimizing compilation process",
+          "children": [
+            {
+              "id": "Code generation",
+              "label": "Code generation"
+            },
+            {
+              "id": "Register allocation",
+              "label": "Register allocation"
+            },
+            {
+              "id": "Instruction selection",
+              "label": "Instruction selection"
+            }
+          ]
+        },
+        {
+          "id": "Managing memory and resources",
+          "label": "Managing memory and resources",
+          "children": [
+            {
+              "id": "Memory management",
+              "label": "Memory management"
+            },
+            {
+              "id": "Cache optimization",
+              "label": "Cache optimization"
+            },
+            {
+              "id": "Branch prediction",
+              "label": "Branch prediction"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "Design Requirements",
+      "label": "Design Requirements",
+      "children": [
+        {
+          "id": "Rigorously defined interfaces",
+          "label": "Rigorously defined interfaces",
+          "children": [
+            {
+              "id": "Internal (between compiler components)",
+              "label": "Internal (between compiler components)"
+            },
+            {
+              "id": "External (with supporting toolsets)",
+              "label": "External (with supporting toolsets)"
+            }
+          ]
+        },
+        {
+          "id": "Scalability and maintainability",
+          "label": "Scalability and maintainability",
+          "children": [
+            {
+              "id": "Modular design",
+              "label": "Modular design"
+            },
+            {
+              "id": "Reusability of code",
+              "label": "Reusability of code"
+            }
+          ]
+        },
+        {
+          "id": "Error handling and debugging",
+          "label": "Error handling and debugging",
+          "children": [
+            {
+              "id": "Syntax errors",
+              "label": "Syntax errors"
+            },
+            {
+              "id": "Semantic errors",
+              "label": "Semantic errors"
+            },
+            {
+              "id": "Runtime errors",
+              "label": "Runtime errors"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "Compiler Construction",
+      "label": "Compiler Construction",
+      "children": [
+        {
+          "id": "One-pass vs. multi-pass compilers",
+          "label": "One-pass vs. multi-pass compilers"
+        },
+        {
+          "id": "Compiler construction techniques",
+          "label": "Compiler construction techniques",
+          "children": [
+            {
+              "id": "Top-down approach",
+              "label": "Top-down approach"
+            },
+            {
+              "id": "Bottom-up approach",
+              "label": "Bottom-up approach"
+            },
+            {
+              "id": "Hybrid approach",
+              "label": "Hybrid approach"
+            }
+          ]
+        },
+        {
+          "id": "Compiler generation tools",
+          "label": "Compiler generation tools",
+          "children": [
+            {
+              "id": "Lexical analysis",
+              "label": "Lexical analysis"
+            },
+            {
+              "id": "Syntactic analysis",
+              "label": "Syntactic analysis"
+            },
+            {
+              "id": "Semantic analysis",
+              "label": "Semantic analysis"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "Future Directions",
+      "label": "Future Directions",
+      "children": [
+        {
+          "id": "Object-oriented languages and Java",
+          "label": "Object-oriented languages and Java"
+        },
+        {
+          "id": "Security and parallel computing",
+          "label": "Security and parallel computing"
+        },
+        {
+          "id": "Code optimization and recompilation",
+          "label": "Code optimization and recompilation"
+        },
+        {
+          "id": "Retargetable compilation methodologies",
+          "label": "Retargetable compilation methodologies"
+        }
+      ]
+    }
+  ]
+}
