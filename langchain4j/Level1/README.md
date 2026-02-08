@@ -39,7 +39,7 @@ This level does **not** include memory, tools, or advanced flow control. Each in
 ## How To Run
 
 1. Ensure you have Java 17+ and Maven installed.
-2. Navigate to this module (`level1-basic`) in your terminal.
+2. Navigate to this module (`Level1`) in your terminal.
 3. Run the app via IntelliJ or Maven:
    ```bash
    mvn clean compile exec:java -Dexec.mainClass="com.langchain4j.level1.Main"

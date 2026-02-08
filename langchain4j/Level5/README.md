@@ -1,4 +1,24 @@
-# 1. Clean and build
+## Level 5: Multi-Agent Research System
+
+This module implements a **multi-agent, retrieval-augmented research system**. Instead of a single RAG chain, the logic is split across specialized agents with a coordinator handling routing and control flow.
+
+### What This Module Does
+
+- Ingests large documents (PDFs, scanned files via OCR, text)
+- Stores embeddings in a vector store for persistent retrieval
+- Uses a **Coordinator** to analyze user intent
+- Routes queries to:
+  - a **Retrieval Agent** for document context
+  - a **Tool Agent** for external web search (SearchAPI)
+  - a **QA / Synthesis Agent** for final response generation
+- Supports multi-step, compound questions that require both document lookup and external information
+
+---
+
+## How to Run
+
+### 1. Clean and build
+```bash
 mvn clean install
 
 # 2. Set Keys 
@@ -23,9 +43,8 @@ $env:WAPI_KEY = "weaviate-api-key"
 
 # 3. Run the app
 mvn exec:java 
-```bash
-  mvn exec:java 
-```
+
+
 ### Challenges Faced
 
 - **Single-Agent Bottlenecks**
