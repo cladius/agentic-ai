@@ -24,14 +24,14 @@ export const chunkembedDocuments = {
     for (const mdoc of documents) {
       try {
         console.log('Document properties:', Object.keys(mdoc));
-        
+        //chunking
         const chunks = await mdoc.chunk();
         const model = genAI.getGenerativeModel({ model: "text-embedding-004" });
 
         const texts = await Promise.all(
           chunks.map(async (chunk) => await chunk.getText()) 
         );
-
+        //embedding
         const embeddings = await Promise.all(
           texts.map(async (text) => {
             const result = await model.embedContent(text);

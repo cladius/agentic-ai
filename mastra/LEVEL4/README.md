@@ -1,14 +1,9 @@
+# LEVEL 4
 
-# **LEVEL 4**
- **OBJECTIVE**\
- Create a vector store (e.g., Compiler Design book) and push content into it
+## Overview
+ This level deals with introducing a vector memory to the system, following are the steps to achieve the same. Create a vector store (e.g., Compiler Design book) and push content into it. The system should be able to vectorize a resume and extract structured info.
 
- Vectorize a resume and extract structured info
-
- Design sequential or parallel agent workflows
-
- Enable agent-to-tool calling
- # **Vector Stores**
+ ## Vector Stores
  During level 4 we brushed over the importance of recall power and context. The context window that an agent is endowed with is usually considered to be minimal in size and restricted to textual input from the user. \
  This makes agentic solutions entirely useless for individuals working in academia or other content intensive fields. Here, the need for larger context, from document sources, arises. 
 
@@ -26,4 +21,4 @@
 - Since Mastra's playground could not be changed, I made a separate frontend solely for uploading documents. Connecting the Mastra server, frontend and the backend for the uploads proved to be a bit of a challenge.
 
 ### Output screenshot
-![Output photo](https://github.com/meghnamankotia/mastra-psl/blob/main/assets/Screenshot%202025-11-29%20154157.png)
+![Output photo](../assets/Screenshot%202025-11-29%20154157.png)

@@ -12,8 +12,8 @@
 
 ### Output Screenshots 
 
-![Prompt](https://github.com/meghnamankotia/mastra-psl/blob/main/assets/Screenshot%202025-11-29%20155630.png)
-![Mindmap](https://github.com/meghnamankotia/mastra-psl/blob/main/assets/Screenshot%202025-11-29%20155648.png)
+![Prompt](../assets/Screenshot%202025-11-29%20155630.png)
+![Mindmap](../assets/Screenshot%202025-11-29%20155648.png)
 
  # **Podcast Tool**
  Users enter prompts requesting podcasts on any desired topic. Gemini creates a script, including dialogue for the host and the guest. This dialogue is sent as a single text input to the podcast tool. The tool separates the lines of the dialogue and uses Google's text-to-speech model to create each individual audio clip. The audio clips are joined together using the ffmpeg libraries to create the final podcast which can be found in `.mastra/output/podcasts`.
@@ -23,4 +23,4 @@
  
 ### Output demo
 
-[Video demo](https://github.com/meghnamankotia/mastra-psl/blob/main/assets/14.11.2025_00.33.51_REC.mp4)
+[Video demo](../assets/14.11.2025_00.33.51_REC.mp4)

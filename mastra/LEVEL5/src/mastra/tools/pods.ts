@@ -7,6 +7,7 @@ import ffmpeg from "fluent-ffmpeg";
 import ffmpegPath from "ffmpeg-static";
 import ffprobePath from "ffprobe-static";
 
+//Making sure ffmpeg is working
 if (!ffmpegPath) {
   throw new Error("FFmpeg binary not found. Make sure ffmpeg-static is installed.");
 }
@@ -15,6 +16,7 @@ ffmpeg.setFfprobePath(ffprobePath.path);
 
 const client = new textToSpeech.TextToSpeechClient();
 
+//defining input object
 const podcastInput = z.object({
   title: z.string(),
   script: z.string().describe(`
@@ -50,10 +52,10 @@ export const podcastTool = createTool({
     if (!fs.existsSync(outputDir)) fs.mkdirSync(outputDir, { recursive: true });
     const safeTitle = title.replace(/[^\w\s-]/g,"").replace(/\s+/g, "_").toLowerCase();
     const basePath = path.join(outputDir, safeTitle);
-
+    // breaking generated script into segments(each dialogue is separated)
     const segments = script.split(/\r?\n+/).map(line=> line.trim()).filter(line => /^\s*(Host|Guest)\s*:/i.test(line));
     const audioSegments: string[] = [];
-
+    //audio generated for each dialogue
     for (let i = 0; i < segments.length; i++) {
 
       const [speaker, ...contentArr] = segments[i].split(":");
@@ -72,6 +74,7 @@ export const podcastTool = createTool({
       audioSegments.push(audioPath);
     }
 
+    //each audio file is combined and stored at the final path, individual files are removed
     const finalPath = `${basePath}_final.mp3`;
 
     await new Promise<void>((resolve, reject) => {

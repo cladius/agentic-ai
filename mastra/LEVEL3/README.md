@@ -31,7 +31,7 @@ Finally, ensure that you've added the required gmail ids to the scope of your pr
 -   The Mastra documentation states that tools can be create by making instances of the createTool class (some sources mentioned defineTool), however this is not necessary as the tools can be exported as simple functions. This was not really a challenge, but rather a small discovery that is not properly documented.
 
 ## Output screenshots 
-![Output image](https://github.com/meghnamankotia/mastra-psl/blob/main/assets/Screenshot%202025-11-29%20153934.png)
+![Output image](../assets/Screenshot%202025-11-29%20153934.png)
 
 
 

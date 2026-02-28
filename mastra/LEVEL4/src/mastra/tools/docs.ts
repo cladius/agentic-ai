@@ -1,3 +1,4 @@
+// import { defineTool } from '@mastra/core/tool';
 import { google } from 'googleapis';
 import path from 'path';
 import dotenv from 'dotenv';
@@ -14,6 +15,9 @@ const {
 } = process.env;
 
 async function getGoogleAuth() {
+  /**
+   * Carry out OAuth when connecting to Google Drive/Docs. One time Auth only.
+   */
   const oAuth2Client = new google.auth.OAuth2(GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET, GOOGLE_REDIRECT_URI);
   const tokenPath= path.resolve(GOOGLE_TOKEN_PATH || './tokens.json');
 
@@ -66,7 +70,6 @@ async function getGoogleAuth() {
 
 export const writeGoogleDocTool = {
   name: "writeGoogleDoc",
-  id: "writeGoogleDoc",
   description: "Writes content to a Google Doc with a given document title.",
   parameters: {
     type: "object",
@@ -76,7 +79,8 @@ export const writeGoogleDocTool = {
     },
     required: ["title", "content"],
   },
-  async execute({ title, content }: { title: string; content: string }) {
+  //connecting
+  async execute({ title, content }) {
     const auth = await getGoogleAuth();
     const docs = google.docs({ version: "v1", auth });
     const drive= google.drive({ version: "v3", auth });
@@ -95,6 +99,8 @@ export const writeGoogleDocTool = {
     if (!documentId) {
       throw new Error('Couldn\'t find the document ID for the specified title');
     }
+
+    // Updating document
     await docs.documents.batchUpdate({
       documentId,
       requestBody: {
@@ -116,7 +122,6 @@ export const writeGoogleDocTool = {
 
 export const createGoogleDocTool={
   name: "createGoogleDoc",
-  id:"createGoogleDoc",
   description: "Creates a new Google Doc with a given title.",
   parameters: {
     type: "object",
@@ -125,7 +130,9 @@ export const createGoogleDocTool={
     },
     required: ["title"],
   },
-  async execute({ title }: { title: string}) {
+
+  //connect and send request for creation
+  async execute({ title }) {
     const auth = await getGoogleAuth();
     const docs = google.docs({ version: "v1", auth });
     const res = await docs.documents.create({

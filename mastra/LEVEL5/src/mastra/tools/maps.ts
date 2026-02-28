@@ -18,7 +18,7 @@ export const generateMindMap = createTool({
   execute: async (ctx: FixedCtx) => {
     const { topic, content } = ctx.context;
 
-    // ✅ Embed Mermaid client-side renderer
+    //  Embed Mermaid client-side renderer
     const html = `<!DOCTYPE html>
 <html>
   <head>
@@ -83,6 +83,7 @@ export const generateMindMap = createTool({
     const svgElement = await page.$("svg");
     if (!svgElement) throw new Error("SVG not found for screenshot.");
 
+    // Saving mindmap locally
     const outputDir = path.resolve("mindmaps");
     if (!fs.existsSync(outputDir)) fs.mkdirSync(outputDir, { recursive: true });
     const safeTopic = topic.replace(/\s+/g, "_").toLowerCase();

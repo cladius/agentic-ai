@@ -6,13 +6,15 @@ This level aims to build a **Conversational AI Agent** using Mastra and Google's
 ### What is Conversational Memory?
 Conversational Memory means the agent keeps track of your conversation history (e.g., what you asked and its responses) to make answers more relevant. For instance:
 
-> You say: "I’m Tripty, interested in compiler design and ML. What are career options?"
+```
+You say: "I’m Tripty, interested in compiler design and ML. What are career options?"
 
-> The agent responds: "Careers in compiler engineering or ML research are great fits."
+The agent responds: "Careers in compiler engineering or ML research are great fits."
 
-> You ask: "What textbooks align with my interests?"
+You ask: "What textbooks align with my interests?"
 
-> The agent uses the history (knowing you like compiler design and ML) to suggest: "Try 'Compilers: Principles, Techniques, and Tools' and 'Deep Learning'."
+The agent uses the history (knowing you like compiler design and ML) to suggest: "Try 'Compilers: Principles, Techniques, and Tools' and 'Deep Learning'."
+```
 
 
 ## Conversation States
@@ -32,7 +34,7 @@ Working memory can be found in two scopes: Thread-scoped & Resource-scoped
 **3. Semantic Recall**  - When older messages are no longer in the Message History, but are relevant to the current context, a RAG-based search is used. Vector embeddings are searched based on similarity. This helps maintain context over long conversations. It is enabled by default.
 
 ## Problem Faced 
-While following the documentation for working memory customization, I was faced with an error which stated that the code I had followed was invalid. The documentation agent was also not of much help; it was unable to provide exactly what I was asking for. Upon searching online, I found another method to implement the same concept, which worked.
+While following the documentation for working memory customization, I was faced with an error which stated that the scope of working memory could simply be defined by  `scope: type of memory`, however the parameter was not recognized. The documentation agent was also not of much help; it was unable to provide exactly what I was asking for. Upon searching online, I found another method to implement the same concept, which worked and has been used here.
 
 The documentation can be faulty at some points or may leave out key details that you have to figure out yourself.
 

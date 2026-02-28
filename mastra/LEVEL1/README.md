@@ -9,6 +9,8 @@ Mastra makes use of the Vercel AI SDK to integrate LLMs to their workflows. The 
 
 However, only a select few providers are currently maintained by the AI SDK team. These are known as  **Official Providers.**
 
+-[List of official model providers](https://mastra.ai/models/providers)
+
 Other LLMs may be supported using  **Community Providers**  (e.g- Ollama models)
 
 The model selected for this project is Gemini 1.5 pro. Google AI provides $300 of free credits before billing you, much more than anthropic and openAI's $5 credits.

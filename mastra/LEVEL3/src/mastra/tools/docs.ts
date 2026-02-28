@@ -15,6 +15,9 @@ const {
 } = process.env;
 
 async function getGoogleAuth() {
+  /**
+   * Carry out OAuth when connecting to Google Drive/Docs. One time Auth only.
+   */
   const oAuth2Client = new google.auth.OAuth2(GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET, GOOGLE_REDIRECT_URI);
   const tokenPath= path.resolve(GOOGLE_TOKEN_PATH || './tokens.json');
 
@@ -76,6 +79,7 @@ export const writeGoogleDocTool = {
     },
     required: ["title", "content"],
   },
+  //connecting
   async execute({ title, content }) {
     const auth = await getGoogleAuth();
     const docs = google.docs({ version: "v1", auth });
@@ -95,6 +99,8 @@ export const writeGoogleDocTool = {
     if (!documentId) {
       throw new Error('Couldn\'t find the document ID for the specified title');
     }
+
+    // Updating document
     await docs.documents.batchUpdate({
       documentId,
       requestBody: {
@@ -124,6 +130,8 @@ export const createGoogleDocTool={
     },
     required: ["title"],
   },
+
+  //connect and send request for creation
   async execute({ title }) {
     const auth = await getGoogleAuth();
     const docs = google.docs({ version: "v1", auth });
