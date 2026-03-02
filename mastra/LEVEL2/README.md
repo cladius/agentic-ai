@@ -7,7 +7,7 @@ This level aims to build a **Conversational AI Agent** using Mastra and Google's
 Conversational Memory means the agent keeps track of your conversation history (e.g., what you asked and its responses) to make answers more relevant. For instance:
 
 ```
-You say: "I’m Tripty, interested in compiler design and ML. What are career options?"
+You say: "I’m Meghna, interested in compiler design and ML. What are career options?"
 
 The agent responds: "Careers in compiler engineering or ML research are great fits."
 
@@ -37,5 +37,6 @@ Working memory can be found in two scopes: Thread-scoped & Resource-scoped
 While following the documentation for working memory customization, I was faced with an error which stated that the scope of working memory could simply be defined by  `scope: type of memory`, however the parameter was not recognized. The documentation agent was also not of much help; it was unable to provide exactly what I was asking for. Upon searching online, I found another method to implement the same concept, which worked and has been used here.
 
 The documentation can be faulty at some points or may leave out key details that you have to figure out yourself.
+
 
 
