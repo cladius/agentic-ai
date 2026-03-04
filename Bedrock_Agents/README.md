@@ -52,6 +52,181 @@ Bedrock agents are AI-driven systems built on Amazon Bedrock, designed to perfor
 ### **Level 5: Notebook LM mimic**
 - Mimics Google NotebookLM with multi-agent, multi-tool capabilities.
 
+## Export agents, Save agents to JSON & Create agents Using CLI and AWS SDK
+Before starting, ensure:
+- AWS CLI installed
+- AWS credentials configured (`aws configure`)
+- IAM role created for Bedrock Agents
+- Proper permissions for:
+  - `bedrock-agent:*`
+  - `bedrock-agent-runtime:*`
+
+Verify CLI:
+
+```bash
+aws --version
+```
+
+### Export Existing Agent to JSON
+
+Retrieve the existing agent configuration:
+
+```bash
+aws bedrock-agent get-agent \
+  --agent-id <YOUR_AGENT_ID> \
+  --region us-east-1 > original_agent.json
+```
+
+This exports the full agent definition.
+
+### You have to clean the JSON for Reuse
+
+Open 'original_agent.json' and remove:
+Remove These Fields as they are created at the time of agent creation
+
+- `agentId`
+- `agentArn`
+- `agentStatus`
+- `createdAt`
+- `updatedAt`
+- `preparedAt`
+- `clientToken`
+- Outer `"agent": {}` wrapper
+- Any other read-only fields
+
+
+Final Clean JSON Example
+
+Save this as:
+
+```
+create_agent_payload.json
+```
+
+Example structure:
+
+```json
+{
+  "agentName": "my-new-agent",
+  "instruction": "You are a helpful assistant who answers all user queries.",
+  "foundationModel": "anthropic.claude-3-5-sonnet-20240620-v1:0",
+  "agentResourceRoleArn": "arn:aws:iam::<account-id>:role/service-role/AmazonBedrockExecutionRoleForAgents",
+  "orchestrationType": "DEFAULT"
+}
+```
+
+
+
+### Create Agent Using AWS CLI
+
+```bash
+aws bedrock-agent create-agent \
+  --cli-input-json file://create_agent_payload.json \
+  --region us-east-1
+```
+
+If successful, you will receive:
+
+```json
+{
+  "agent": {
+    "agentId": "NEW_AGENT_ID",
+    "agentName": "my-new-agent",
+    "agentStatus": "CREATING"
+  }
+}
+```
+
+Save the returned `agentId`.
+
+Check Agent Status
+
+```bash
+aws bedrock-agent get-agent \
+  --agent-id <NEW_AGENT_ID> \
+  --region us-east-1
+```
+
+Wait until:
+
+```
+"agentStatus": "PREPARED"
+```
+
+The agent must be `PREPARED` before invocation.
+
+
+
+### (Recommended) Create Agent Alias
+
+Creating an alias allows version control and easier updates.
+
+```bash
+aws bedrock-agent create-agent-alias \
+  --agent-alias-name prod \
+  --agent-id <NEW_AGENT_ID> \
+  --region us-east-1
+```
+
+Response will include:
+
+```json
+{
+  "agentAlias": {
+    "agentAliasId": "ALIAS_ID"
+  }
+}
+```
+
+
+
+### Create Agent Using AWS SDK (Python)
+
+Install boto3
+
+```bash
+pip install boto3
+```
+
+Python Script (`create_agent.py`)
+
+```python
+import json
+import boto3
+
+# Load cleaned JSON
+with open("create_agent_payload.json") as f:
+    agent_payload = json.load(f)
+
+client = boto3.client("bedrock-agent", region_name="us-east-1")
+
+response = client.create_agent(**agent_payload)
+
+print("Agent Created Successfully!")
+print("Agent ID:", response["agent"]["agentId"])
+```
+
+Run:
+
+```bash
+python create_agent.py
+```
+
+Invoke Agent Using SDK (Python)
+
+```python
+import boto3
+
+runtime = boto3.client("bedrock-agent-runtime", region_name="us-east-1")
+
+response = runtime.invoke_agent(
+    agentId="NEW_AGENT_ID",
+    sessionId="session1",
+    inputText="Hello, how are you?"
+)
+
+print(response)
+```
 ## References
 
 - For detailed descriptions of each level, visit the [Agentic AI Sample Problem](http://github.com/cladius/agentic-ai/blob/master/sample_problem.md).
