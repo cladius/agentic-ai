@@ -1,9 +1,8 @@
-langchain 
-langchain-groq 
-langgraph 
-faiss-cpu 
-sentence-transformers 
-beautifulsoup4 
-youtube-transcript-api 
-elevenlabs 
-pydantic
+langchain>=1.2.17
+langchain-groq>=1.1.2
+langgraph>=1.0.10
+faiss-cpu>=1.9.0
+sentence-transformers>=3.3.0
+beautifulsoup4>=4.13.0
+youtube-transcript-api>=0.6.3
+pydantic>=2.13.0
