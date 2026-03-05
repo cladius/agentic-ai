@@ -74,3 +74,8 @@ Run the application:
 python level5.py
 ```
 Follow the CLI instructions, ingest the data(webpage url or youtube video link) and ask questions, generate podcasts or mindmaps to test the application.
+
+### References
+* Refer to the [Groq Cloud](https://console.groq.com/home) to get API Keys
+* [Elevenlabs](https://elevenlabs.io/api) for text-speech conversion
+

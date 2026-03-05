@@ -1,0 +1,9 @@
+langchain 
+langchain-groq 
+langgraph 
+faiss-cpu 
+sentence-transformers 
+beautifulsoup4 
+youtube-transcript-api 
+elevenlabs 
+pydantic
