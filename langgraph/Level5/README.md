@@ -55,7 +55,7 @@ The application is built on a state-driven graph. The **Planner Agent** acts as 
 
 2.  **Install dependencies**:
     ```bash
-    pip install langchain langchain-groq langgraph faiss-cpu sentence-transformers beautifulsoup4 youtube-transcript-api elevenlabs pydantic
+    pip install -r requirements.txt
     ```
 
 3.  **Configure API Keys**:
