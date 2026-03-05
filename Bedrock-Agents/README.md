@@ -35,22 +35,9 @@ Bedrock agents are AI-driven systems built on Amazon Bedrock, designed to perfor
    - Lambda functions are used to extend the capabilities of Bedrock agents by integrating external tools and APIs. 
    - These functions are essential for enabling agents to interact with the real world and perform tasks beyond the capabilities of foundational models.
 
-## Levels Overview
+### Problem Statement Overview
+* Refer to the [sample problem](https://github.com/cladius/agentic-ai/blob/master/sample_problem.md) to understand the 5 level problem.
 
-### **Level 1: Basic**
-- A simple agent powered by an LLM to answer basic questions.
-
-### **Level 2: Conversational Memory**
-- Adds memory to manage conversation state and provide context-aware responses.
-
-### **Level 3: Tools**
-- Integrates web search capabilities using the Tavily Search API.
-
-### **Level 4: Vector Store**
-- Implements Retrieval Augmented Generation (RAG) using a vector store.
-
-### **Level 5: Notebook LM mimic**
-- Mimics Google NotebookLM with multi-agent, multi-tool capabilities.
 
 ## Export agents, Save agents to JSON & Create agents Using CLI and AWS SDK
 Before starting, ensure:
