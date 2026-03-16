@@ -218,6 +218,8 @@ print(response)
 
 - For detailed descriptions of each level, visit the [Agentic AI Sample Problem](http://github.com/cladius/agentic-ai/blob/master/sample_problem.md).
 - For more examples and advanced use cases, visit the [Amazon Bedrock Agent Samples](https://github.com/awslabs/amazon-bedrock-agent-samples).
+- For a deep dive on Agentic AI, here's our book - [Agentic AI Demystified: Master the essentials](https://amzn.in/d/02J8fOUV).
+- Get your Free Chapter on Agentic AI [here](https://cladiusfernando.com/learn-agentic-ai/).
 
 
 
