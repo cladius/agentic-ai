@@ -1,0 +1,21 @@
+{
+  "dependencies": [
+    "langgraph",
+    "langchain",
+    "langchain-groq",
+    "langchain-community",
+    "langchain-huggingface",
+    "faiss-cpu",
+    "beautifulsoup4",
+    "youtube-transcript-api",
+    "requests",
+    "pydantic",
+    "numpy",
+    "sentence-transformers"
+  ],
+  "graphs": {
+    "notebook_lm": "./level5.py:graph"
+  },
+  "python_version": "3.11",
+  "env": ".env"
+}
