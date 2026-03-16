@@ -27,3 +27,7 @@ This instance is called inside the index.ts template file provided by Mastra.
 ## Set up
 
 In the .env file create the `GOOGLE_GENERATIVE_AI_API_KEY` variable and add your API key
+
+## Running the project
+
+To run the project enter `npm run dev` in the terminal while you're in the project's root directory. The same command is used to run the project across all the levels.
