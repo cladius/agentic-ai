@@ -24,3 +24,7 @@
 ### Output demo
 
 [Video demo](../assets/14.11.2025_00.33.51_REC.mp4)
+
+## Running the project
+
+To run the project enter `npm run dev` in the terminal while you're in the project's root directory. The same command is used to run the project across all the levels.

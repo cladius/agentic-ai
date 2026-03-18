@@ -22,3 +22,7 @@
 
 ### Output screenshot
 ![Output photo](../assets/Screenshot%202025-11-29%20154157.png)
+
+## Running the project
+
+To run the project enter `npm run dev` in the terminal while you're in the project's root directory. The same command is used to run the project across all the levels.

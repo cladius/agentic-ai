@@ -38,5 +38,9 @@ While following the documentation for working memory customization, I was faced 
 
 The documentation can be faulty at some points or may leave out key details that you have to figure out yourself.
 
+## Running the project
+
+To run the project enter `npm run dev` in the terminal while you're in the project's root directory. The same command is used to run the project across all the levels.
+
 
 

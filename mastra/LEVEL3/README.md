@@ -34,5 +34,8 @@ Finally, ensure that you've added the required gmail ids to the scope of your pr
 ![Output image](../assets/Screenshot%202025-11-29%20153934.png)
 
 
+## Running the project
+
+To run the project enter `npm run dev` in the terminal while you're in the project's root directory. The same command is used to run the project across all the levels.
 
 
