@@ -16,6 +16,6 @@
   "graphs": {
     "notebook_lm": "./level5.py:graph"
   },
-  "python_version": "3.11",
+  "python_version": "3.14",
   "env": ".env"
 }
