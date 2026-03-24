@@ -16,7 +16,9 @@ A powerful, multi-agent CLI application that mimics the core features of Google'
 * **Visual Mindmaps**: Generates **Mermaid.js** syntax to visualize the hierarchical structure of your "notebook."
 * **Structured Intent Analysis**: Powered by Llama 3 via **Groq** for lightning-fast reasoning and routing.
 
----
+## Flow in LangGraph Studio
+<img width="600" height="600" alt="langgraphstudio" src="https://github.com/user-attachments/assets/4d804923-30f1-43d9-884d-15f6bd86b229" />
+
 
 ## Agent Summary 
 
@@ -51,6 +53,7 @@ The application is built on a state-driven graph. The **Planner Agent** acts as 
 
 ### Web Ingester Agent
 **Role**: Scrape and index web page content for retrieval.
+
 
 **Key Responsibilities**:
 * Fetch and clean HTML content.
