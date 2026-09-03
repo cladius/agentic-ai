@@ -47,7 +47,7 @@ tools = [get_weather, add, subtract]
 # -------------------- LLM Setup --------------------
 
 # Initialize the LLM with Groq API key and model
-llm = ChatGroq(groq_api_key=groq_api_key, model="llama-3.3-70b-versatile")
+llm = ChatGroq(groq_api_key=groq_api_key, model="openai/gpt-oss-120b")
 llm_with_tools = llm.bind_tools(tools)
 
 # -------------------- State Definition --------------------

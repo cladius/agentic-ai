@@ -16,7 +16,7 @@ import os
 load_dotenv(find_dotenv())
 
 # Initialize the language model with specific parameters
-llm = ChatGroq(model="llama-3.3-70b-versatile", temperature=0)
+llm = ChatGroq(model="openai/gpt-oss-120b", temperature=0)
 
 # Load a PDF file (resume) using LangChain's PyPDFLoader
 pdf_loader = PyPDFLoader("C:\\Users\\LENOVO\\Desktop\\Agentic AI\\Langgraph-Rag\\RAG\\Khushboo-Patil-Resume.pdf") # Specify the path to your resume PDF
