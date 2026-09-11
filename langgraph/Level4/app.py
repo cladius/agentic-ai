@@ -1,190 +1,121 @@
+"""
+Simple LangGraph RAG agent for a resume.
+
+Same behavior as app.py (the LLM decides on its own when to search the resume,
+and can search multiple times before answering), but written as plain functions
+instead of a class, to make the LangGraph pieces easier to follow:
+
+START -> "agent" -> (needs to search? -> "tools" -> back to "agent") -> END
+
+- "agent" node: asks the LLM to respond, given the conversation so far.
+- "tools" node: if the LLM asked to use the search tool, run it and return the result.
+- The loop keeps going until the LLM answers without asking for another search.
+"""
+
+import os
 from dotenv import find_dotenv, load_dotenv
 from langchain_groq import ChatGroq
 from langchain_community.document_loaders import PyPDFLoader
-from langchain.text_splitter import SentenceTransformersTokenTextSplitter
+from langchain_text_splitters import SentenceTransformersTokenTextSplitter
 import chromadb
-from langchain_chroma import Chroma
 from chromadb.utils.embedding_functions import SentenceTransformerEmbeddingFunction
-from langchain_core.tools import tool,StructuredTool
+from langchain_core.tools import tool
+from langchain_core.messages import HumanMessage, SystemMessage, ToolMessage
 from langgraph.graph import StateGraph, END
 from typing import TypedDict, Annotated
 import operator
-from langchain_core.messages import AnyMessage, HumanMessage, SystemMessage, ToolMessage
-import os
+from langchain_core.messages import AnyMessage
 
-# Load environment variables from a .env file
+# 1. Load GROQ_API_KEY from .env
 load_dotenv(find_dotenv())
 
-# Initialize the language model with specific parameters
+# 2. Set up the LLM
 llm = ChatGroq(model="openai/gpt-oss-120b", temperature=0)
 
-# Load a PDF file (resume) using LangChain's PyPDFLoader
-pdf_loader = PyPDFLoader("C:\\Users\\LENOVO\\Desktop\\Agentic AI\\Langgraph-Rag\\RAG\\Khushboo-Patil-Resume.pdf") # Specify the path to your resume PDF
-pages = pdf_loader.load() # Load all pages as document objects
+# 3. Load the resume PDF and split it into small text chunks
+RESUME_PATH = os.path.join(os.path.dirname(__file__), "..", "..", "pydantic", "Level4", "resume.pdf")
+pages = PyPDFLoader(RESUME_PATH).load()
 
-# Split the loaded PDF pages into smaller text chunks for embedding
-text_splitter = SentenceTransformersTokenTextSplitter(
-    model_name = "sentence-transformers/all-distilroberta-v1", # Model for tokenization
-    chunk_overlap = 30, # Overlap between chunks for context
+splitter = SentenceTransformersTokenTextSplitter(
+model_name="sentence-transformers/all-distilroberta-v1",
+chunk_overlap=30,
 )
-split_pages = text_splitter.split_documents(pages) # Split into chunks
+chunks = splitter.split_documents(pages)
 
-# Create a persistent ChromaDB collection and add the split resume chunks as embeddings
-persistent_client = chromadb.PersistentClient(path="./resumedb") # Persistent DB location
-distil_roberta = SentenceTransformerEmbeddingFunction(model_name="all-distilroberta-v1") # Embedding function
-collection = persistent_client.create_collection(
-    name="resume",
-    metadata={
-        "title": "Resume",
-        "description": "This store contains embeddings of Resume"
-    },
-    embedding_function = distil_roberta,
-    get_or_create = True
-)
+# 4. Store the chunks as embeddings in a local ChromaDB collection
+client = chromadb.PersistentClient(path="./resumedb_simple")
+embedding_fn = SentenceTransformerEmbeddingFunction(model_name="all-distilroberta-v1")
+collection = client.get_or_create_collection(name="resume", embedding_function=embedding_fn)
 
-# Add documents, ids, and metadata to the collection for retrieval
+if collection.count() == 0:
 collection.add(
-    documents=[doc.page_content for doc in split_pages],
-    ids=[f"Chunk-{idx}" for idx, doc in enumerate(split_pages, start=1)],
-    metadatas= [doc.metadata for doc in split_pages]
+documents=[chunk.page_content for chunk in chunks],
+ids=[f"chunk-{i}" for i in range(len(chunks))],
 )
 
-# Define a LangChain tool to retrieve information from the resume collection
+
+# 5. The one tool the agent is allowed to call
 @tool
-def retriever_tool(query):
-    """
-    search_resume_file:
-    Search and return projects information from the resume file.
+def search_resume(query: str) -> str:
+"""Search the resume and return the most relevant excerpts for the query."""
+results = collection.query(query_texts=[query], n_results=2)
+return "\n\n".join(results["documents"][0])
 
-    Args:
-        query (str): The search query to retrieve relevant information from the resume.
 
-    Returns:
-        str: The top 2 relevant chunks of text from the resume.
-    """
-    results = collection.query(
-        query_texts=[query,],
-        n_results=2 # Return top 2 relevant chunks
-    )
+tools_by_name = {search_resume.name: search_resume}
+llm_with_tools = llm.bind_tools([search_resume])
 
-    return "\n\n\n".join(results["documents"][0])
+SYSTEM_PROMPT = (
+"You are a helpful assistant. Use the search_resume tool to look up "
+"information before answering questions about the resume. You may call "
+"it more than once if you need to look up different things."
+)
 
-tools = [retriever_tool]
 
-# Define a custom RAG (Retrieval Augmented Generation) agent using LangGraph
+# 6. LangGraph state: just a running list of messages
 class AgentState(TypedDict):
-    """
-    A typed dictionary to represent the state of the agent.
+messages: Annotated[list[AnyMessage], operator.add]
 
-    Attributes:
-        messages (list[AnyMessage]): A list of messages exchanged between the user and the agent.
-    """
-    messages: Annotated[list[AnyMessage], operator.add]
 
-# RAGAgent class encapsulates the agent logic and graph
-class RAGAgent:
-    """
-    A custom Retrieval-Augmented Generation (RAG) agent that uses LangGraph to manage reasoning steps.
+# 7. Node: ask the LLM what to do next (answer, or call the tool)
+def call_agent(state: AgentState):
+messages = [SystemMessage(content=SYSTEM_PROMPT)] + state["messages"]
+response = llm_with_tools.invoke(messages)
+return {"messages": [response]}
 
-    Attributes:
-        model: The language model used for generating responses.
-        tools (dict): A dictionary of tools available to the agent.
-        system (str): The system prompt for the agent.
-        graph: The state graph that defines the agent's reasoning process.
-    """
 
-    def __init__(self, model, tools, system="You are a helpful assistant"):
-        """
-        Initialize the RAGAgent with a language model, tools, and a system prompt.
+# 8. Node: run whatever tool call(s) the LLM asked for
+def call_tools(state: AgentState):
+last_message = state["messages"][-1]
+results = []
+for tool_call in last_message.tool_calls:
+tool_fn = tools_by_name[tool_call["name"]]
+output = tool_fn.invoke(tool_call["args"])
+results.append(ToolMessage(content=str(output), tool_call_id=tool_call["id"]))
+return {"messages": results}
 
-        Args:
-            model: The language model to use.
-            tools (list): A list of tools available to the agent.
-            system (str): The system prompt for the agent.
-        """
-        self.system = system
-        self.tools = {t.name: t for t in tools}
-        self.model = model.bind_tools(tools, tool_choice="auto")
 
-        # Build the state graph for the agent
-        graph = StateGraph(AgentState)
-        graph.add_node("llm", self.call_llm)
-        graph.add_node("retriever", self.take_action)
-        graph.add_conditional_edges(
-            "llm",
-            self.exists_action,
-            {True : "retriever", False : END}
-        )
-        graph.add_edge("retriever", "llm")
-        graph.set_entry_point("llm")
-        self.graph = graph.compile()
+# 9. Routing: after the agent responds, did it ask for a tool or is it done?
+def agent_wants_tool(state: AgentState) -> bool:
+return len(state["messages"][-1].tool_calls) > 0
 
-    def exists_action(self, state: AgentState):
-        """
-        Check if the last message contains tool calls.
 
-        Args:
-            state (AgentState): The current state of the agent.
+# 10. Wire the graph together
+graph = StateGraph(AgentState)
+graph.add_node("agent", call_agent)
+graph.add_node("tools", call_tools)
+graph.set_entry_point("agent")
+graph.add_conditional_edges("agent", agent_wants_tool, {True: "tools", False: END})
+graph.add_edge("tools", "agent")
+app = graph.compile()
 
-        Returns:
-            bool: True if tool calls exist, False otherwise.
-        """
-        result = state['messages'][-1]
-        return len(result.tool_calls) > 0
 
-    def call_llm(self,state: AgentState):
-        """
-        Call the language model with the current messages and system prompt.
-
-        Args:
-            state (AgentState): The current state of the agent.
-
-        Returns:
-            dict: The updated state with the language model's response.
-        """
-        messages = state['messages']
-        if self.system:
-            messages = [SystemMessage(content=self.system)] + messages
-        message = self.model.invoke(messages)
-        return {'messages' : [message]}
-
-    def take_action(self, state: AgentState):
-        """
-        Execute the tool calls and return results as ToolMessages.
-
-        Args:
-            state (AgentState): The current state of the agent.
-
-        Returns:
-            dict: The updated state with the tool execution results.
-        """
-        tool_calls = state['messages'][-1].tool_calls
-        results = []
-        for t in tool_calls:
-            if not t['name'] in self.tools:
-                print(f"\n Tool: {t} does not exist.")
-                result = "Incorrect tool name, Please Retry and select tools from list of available tools."
-            else:
-                result = self.tools[t['name']].invoke(t['args'])
-            results.append(ToolMessage(tool_call_id=t['id'], name=t['name'], content=str(result)))
-        return {'messages' : results}
-
-# Define the system prompt for the agent
-prompt = """
-You are a helpful assistant. Use the retriever tool available to answer questions.
-You are allowed to make multiple calls (either together or in sequence).
-If you need to look up some information before asking a follow up question, you are allowed to do that!.
-"""
-
-# Instantiate the RAGAgent
-agent = RAGAgent(llm, tools, system = prompt)
-
-# Main loop for user interaction
+# 11. Simple chat loop
+if __name__ == "__main__":
 while True:
-    user_input = input("You: ")
-    if user_input.lower() in ["exit", "quit"]:
-        print("Exiting the chat.")
-        break
-    messages = [HumanMessage(content=user_input)]
-    result = agent.graph.invoke({"messages":messages})
-    print(result['messages'][-1].content)
+question = input("You: ")
+if question.lower() in ["exit", "quit"]:
+print("Exiting the chat.")
+break
+result = app.invoke({"messages": [HumanMessage(content=question)]})
+print("AI:", result["messages"][-1].content)
