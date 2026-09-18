@@ -20,7 +20,7 @@ class State(MessagesState):
 
 # Initialize Groq LLM
 llm = ChatGroq(
-    model="openai/gpt-oss-20b",
+    model="openai/gpt-oss-120b",
     temperature=0.7,
     groq_api_key=groq_api_key
 )
