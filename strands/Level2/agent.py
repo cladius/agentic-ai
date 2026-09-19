@@ -130,17 +130,6 @@ def main() -> None:
         # includes everything said earlier in this session as context.
         agent(user_message)
 
-    # Just to make the "it remembers everything" point visible: dump the
-    # full accumulated transcript that Strands has been building for us.
-    print("\n--- Full conversation Strands remembered (agent.messages) ---")
-    for message in agent.messages:
-        role = message.get("role", "?")
-        # Message content is a list of content blocks; grab any plain text.
-        text_parts = [
-            block.get("text", "") for block in message.get("content", []) if "text" in block
-        ]
-        print(f"[{role}] {' '.join(text_parts)}")
-
 
 if __name__ == "__main__":
     main()
