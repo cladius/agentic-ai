@@ -34,6 +34,7 @@ def build_agent() -> Agent:
     how to behave; it does not give it any new capabilities.
     """
     return Agent(
+        model="apac.amazon.nova-lite-v1:0",
         # `system_prompt` shapes the persona/behaviour of the agent.
         # It is NOT a tool - the agent still can't do anything but talk.
         system_prompt=(
