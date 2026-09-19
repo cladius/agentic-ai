@@ -15,8 +15,10 @@ open-source SDK for building agents in a model-driven way.
 - [**Level 3: Web Search Agent with Tools**](Level3/README.md) - connects to
   Tavily's official MCP server so the agent can look up current information
   on the web.
+- [**Level 4: Vector Store / RAG Agent**](Level4/README.md) - looks up
+  answers in an existing AWS Bedrock managed Knowledge Base.
 
-Levels 1-3 are deliberately minimal and heavily commented, meant to be read
+Levels 1-4 are deliberately minimal and heavily commented, meant to be read
 top to bottom in `agent.py`.
 
 ## Other examples

@@ -1,0 +1,4 @@
+strands-agents>=1.50.0
+boto3>=1.34.0
+botocore[crt]
+python-dotenv>=1.0.0

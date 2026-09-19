@@ -121,6 +121,7 @@ loop.
   other pre-built, non-deprecated tools (calculator, python REPL, file I/O,
   AWS calls, etc.) that can be added to `tools=[...]` the same way as a
   plain Python package, without MCP.
-- Level 4 (vector store / RAG) and Level 5 (multi-agent NotebookLM mimic) are
-  natural next steps per [`sample_problem.md`](../../sample_problem.md), not
-  yet implemented in this `strands/` folder.
+- [Level 4](../Level4/README.md) (vector store / RAG via a Bedrock managed
+  Knowledge Base) is the natural next step per
+  [`sample_problem.md`](../../sample_problem.md). Level 5 (multi-agent
+  NotebookLM mimic) is not yet implemented in this `strands/` folder.
