@@ -19,9 +19,38 @@ AWS_SECRET_ACCESS_KEY env vars) with access to a Bedrock model such as
 Anthropic Claude. See: https://strandsagents.com/docs/user-guide/quickstart/python/
 """
 
+import boto3
+
 # `Agent` is the core building block of Strands - it wraps an LLM plus
 # (optionally) a system prompt, tools, and memory/session configuration.
 from strands import Agent
+
+
+def _nova_pro_model_id() -> str:
+    """
+    Amazon Nova Pro isn't invoked by a single global model ID - it's only
+    offered through "cross-region inference profiles", which are scoped to
+    a geography ("us.", "eu.", "apac.") rather than one specific region.
+    Using the wrong geography prefix for your AWS region raises:
+        ValidationException: The provided model identifier is invalid.
+    So instead of hardcoding e.g. "us.amazon.nova-pro-v1:0", pick the prefix
+    that matches whichever region boto3 actually resolves for you.
+
+    We deliberately use `boto3.session.Session().region_name` here (NOT just
+    `os.environ["AWS_REGION"]`) because boto3's own resolution also checks
+    `~/.aws/config` (default region / AWS_PROFILE), which is how most people
+    actually set their region - an env-var-only check would silently miss
+    that and fall back to the wrong geography.
+    Docs: https://docs.aws.amazon.com/bedrock/latest/userguide/cross-region-inference-support.html
+    """
+    region = boto3.session.Session().region_name or "us-east-1"
+    if region.startswith("eu-"):
+        geography = "eu"
+    elif region.startswith("ap-"):
+        geography = "apac"
+    else:
+        geography = "us"
+    return f"{geography}.amazon.nova-pro-v1:0"
 
 
 def build_agent() -> Agent:
@@ -41,9 +70,13 @@ def build_agent() -> Agent:
             "directly in a few sentences. If you don't know something, say so "
             "instead of guessing."
         ),
-        # Uncomment to pin a specific Bedrock model instead of the SDK default,
-        # e.g. any model ID enabled in your AWS account/region:
-        # model="us.anthropic.claude-3-5-sonnet-20241022-v2:0",
+        # Explicitly pinned to Amazon Nova Pro (via its cross-region inference
+        # profile, resolved for your region above) instead of Strands'
+        # Anthropic-model default, so this example doesn't compete for a
+        # shared Bedrock Anthropic usage quota. Swap the "-pro-" for "-lite-"
+        # in _nova_pro_model_id() for a cheaper/faster (but less capable)
+        # alternative.
+        model=_nova_pro_model_id(),
     )
 
 
