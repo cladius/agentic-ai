@@ -1,0 +1,29 @@
+{
+  "name": "agent-5",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "module",
+  "description": "",
+  "dependencies": {
+    "@chroma-core/default-embed": "^0.1.8",
+    "@google-cloud/text-to-speech": "^6.2.0",
+    "@huggingface/transformers": "^3.7.3",
+    "@langchain/community": "^0.3.50",
+    "@langchain/core": "^0.3.68",
+    "@langchain/groq": "^0.2.3",
+    "@langchain/langgraph": "^0.4.3",
+    "chromadb": "^3.0.15",
+    "html-to-text": "^9.0.5",
+    "jsdom": "^26.1.0",
+    "pdf-parse": "^1.1.1",
+    "prompt-sync": "^4.2.0",
+    "youtubei.js": "^15.0.1",
+    "zod": "^3.25.76"
+  }
+}
