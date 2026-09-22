@@ -6,11 +6,19 @@ from langchain_core.messages import HumanMessage
 from langgraph.graph.message import add_messages
 from langgraph.prebuilt import ToolNode, tools_condition
 from langgraph.graph import StateGraph, END, START
+from tavily import TavilyClient
 
 # Read GROQ_API_KEY from environment
 groq_api_key = os.environ.get("GROQ_API_KEY")
 if not groq_api_key:
     raise ValueError("GROQ_API_KEY environment variable not set.")
+
+# Read TAVILY_API_KEY from environment
+tavily_api_key = os.environ.get("TAVILY_API_KEY")
+if not tavily_api_key:
+    raise ValueError("TAVILY_API_KEY environment variable not set.")
+
+tavily_client = TavilyClient(api_key=tavily_api_key)
 
 # -------------------- Tool Definitions --------------------
 
@@ -41,13 +49,25 @@ def subtract(a: int, b: int) -> int:
     print("[TOOL RESULT] subtract returned:", result)
     return result
 
+@tool
+def web_search(query: str) -> str:
+    """Search the web for up-to-date information on a topic."""
+    print(f"[TOOL CALL] web_search called with: query={query}")
+    response = tavily_client.search(query=query, max_results=3)
+    results = response.get("results", [])
+    result = "\n".join(
+        f"- {r['title']}: {r['content']} ({r['url']})" for r in results
+    ) or "No results found."
+    print("[TOOL RESULT] web_search returned:", result)
+    return result
+
 # List of available tools
-tools = [get_weather, add, subtract]
+tools = [get_weather, add, subtract, web_search]
 
 # -------------------- LLM Setup --------------------
 
 # Initialize the LLM with Groq API key and model
-llm = ChatGroq(groq_api_key=groq_api_key, model="llama-3.3-70b-versatile")
+llm = ChatGroq(groq_api_key=groq_api_key, model="openai/gpt-oss-120b")
 llm_with_tools = llm.bind_tools(tools)
 
 # -------------------- State Definition --------------------

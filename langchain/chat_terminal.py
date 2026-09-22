@@ -1,5 +1,5 @@
 from langchain_groq import ChatGroq
-from langchain.schema import HumanMessage
+from langchain_core.messages import HumanMessage
 from config import Config
 
 # Optionally load environment variables from .env
@@ -24,7 +24,7 @@ def chat():
         if user_input.lower() in ["exit", "quit"]:
             print("Goodbye!")
             break
-        response = llm([HumanMessage(content=user_input)])
+        response = llm.invoke([HumanMessage(content=user_input)])
         print(f"AI: {response.content}")
 
 if __name__ == "__main__":

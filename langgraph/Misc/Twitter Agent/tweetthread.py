@@ -110,7 +110,7 @@ def generate_post_with_groq(state: EbookSharerState) -> EbookSharerState:
         }
 
         payload = {
-            "model": "llama-3.3-70b-versatile",  # Example Groq model, update as needed
+            "model": "openai/gpt-oss-120b",  # Example Groq model, update as needed
             "messages": [
                 {"role": "system", "content": "You are an expert at creating engaging social media content."},
                 {"role": "user", "content": prompt}
