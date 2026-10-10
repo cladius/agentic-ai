@@ -2197,7 +2197,7 @@
                 "tool_mode": false,
                 "trace_as_metadata": true,
                 "type": "str",
-                "value": "openai/gpt-oss-20b"
+                "value": "openai/gpt-oss-120b"
               },
               "n": {
                 "_input_type": "IntInput",

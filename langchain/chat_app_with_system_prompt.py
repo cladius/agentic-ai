@@ -8,7 +8,7 @@ from langchain_core.chat_history import BaseChatMessageHistory, InMemoryChatMess
 # Load environment variables from .env file
 load_dotenv()
 GROQ_API_KEY = os.getenv("GROQ_API_KEY")
-MODEL_NAME = os.getenv("MODEL_NAME", "llama-3.3-70b-versatile")
+MODEL_NAME = os.getenv("MODEL_NAME", "openai/gpt-oss-120b")
 
 if not GROQ_API_KEY:
     print("Please set GROQ_API_KEY in your .env file.")

@@ -19,7 +19,7 @@ class AgentState(TypedDict):
 # Initialize the LLM with the Groq API key and model name
 llm = ChatGroq(
     groq_api_key=GROQ_API_KEY,
-    model="llama-3.3-70b-versatile"
+    model="openai/gpt-oss-120b"
 )
 
 def call_model(state: AgentState) -> AgentState:

@@ -32,7 +32,7 @@ vector_store = AstraDBVectorStore(collection_name=ASTRA_DB_COLLECTION,
 retriever = vector_store.as_retriever() 
 
 # ----- Step 4: Initialize LLM ----- 
-llm=ChatGroq(groq_api_key=GROQ_API_KEY,model="llama-3.3-70b-versatile") 
+llm=ChatGroq(groq_api_key=GROQ_API_KEY,model="openai/gpt-oss-120b") 
 
 # ----- Step 5: Memory Node with LLM ----- 
 def memory_node(state: MemoryState) -> MemoryState:    

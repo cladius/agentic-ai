@@ -15,7 +15,7 @@ class AgentState(TypedDict):
     messages: List[BaseMessage]
 
 # Initialize the LLM with the Groq API key and model
-llm = ChatGroq(groq_api_key=GROQ_API_KEY, model="llama-3.3-70b-versatile")
+llm = ChatGroq(groq_api_key=GROQ_API_KEY, model="openai/gpt-oss-120b")
 
 # Node function for the LLM: takes state, appends LLM response to messages
 def llm_node(state: AgentState) -> AgentState:

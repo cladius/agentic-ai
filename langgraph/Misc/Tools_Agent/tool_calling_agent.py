@@ -8,7 +8,7 @@ from dotenv import load_dotenv
 #TAVILY_API_KEY = os.getenv("TAVILY_API_KEY") 
 
 # # Step 1: Initialize Groq model 
-llm=ChatGroq(groq_api_key="Your API KEY",model="llama-3.3-70b-versatile") 
+llm=ChatGroq(groq_api_key="Your API KEY",model="openai/gpt-oss-120b") 
 
 # Step 2: Initialize Tavily search tool 
 search_tool = TavilySearchResults(k=3) 
